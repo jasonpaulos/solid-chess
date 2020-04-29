@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:web": "webpack --config webpack.config.js",
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json ./lib"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc.json ./lib",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "bin": {
     "solid-chess": "bin/cli.js"
@@ -23,7 +27,15 @@
   "homepage": "https://github.com/pheyvaer/solid-chess#readme",
   "devDependencies": {
     "@11ty/eleventy": "^0.6.0",
+    "@babel/core": "^7.9.0",
+    "@babel/runtime": "^7.9.2",
+    "@react-native-community/eslint-config": "^1.1.0",
+    "@types/react-native": "^0.62.5",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "eslint": "^6.8.0",
     "jsdoc": "^3.5.5",
+    "metro-react-native-babel-preset": "^0.59.0",
     "minami": "^1.2.3",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2"
@@ -38,6 +50,8 @@
     "n3": "^1.0.2",
     "prefix-ns": "^0.1.2",
     "q": "^1.5.1",
+    "react": "^16.13.1",
+    "react-native": "^0.62.2",
     "semantic-chess": "0.2.0",
     "solid-auth-client": "^2.3.0",
     "streamify-array": "^1.0.1",
