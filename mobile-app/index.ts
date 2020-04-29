@@ -1,7 +1,7 @@
 import { Navigation } from "react-native-navigation";
-import App from "./App";
+import { HomeScreen, HomeScreenID } from './HomeScreen';
 
-Navigation.registerComponent('com.myApp.WelcomeScreen', () => App);
+Navigation.registerComponent(HomeScreenID, () => HomeScreen);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
@@ -10,7 +10,7 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: 'com.myApp.WelcomeScreen'
+              name: HomeScreenID
             }
           }
         ]
