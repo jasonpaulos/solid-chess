@@ -52,6 +52,7 @@
     "q": "^1.5.1",
     "react": "^16.13.1",
     "react-native": "^0.62.2",
+    "react-native-navigation": "^6.5.0",
     "semantic-chess": "0.2.0",
     "solid-auth-client": "^2.3.0",
     "streamify-array": "^1.0.1",
