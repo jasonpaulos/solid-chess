@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -6,16 +6,49 @@ import {
   StyleSheet
 } from 'react-native';
 import { Color } from './Color';
+import { useWebId, logIn, logOut } from './auth';
 
 export const HomeScreenID = 'com.solidchess.HomeScreen';
 
-export function HomeScreen() {
+export const HomeScreen = () => {
+  const webId = useWebId();
+
+  if (webId == null) {
+    return <LoggedOut />;
+  }
+
+  return <LoggedIn webId={webId} />;
+}
+
+HomeScreen.options = {
+  topBar: {
+    title: {
+      text: 'Solid Chess',
+    }
+  }
+};
+
+const LoggedOut: FunctionComponent = () => {
+  return (
+    <View style={styles.content}>
+      <View style={styles.greeting}>
+        <Text style={styles.greetingLabel} numberOfLines={1}>Welcome to Solid Chess</Text>
+      </View>
+      <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected} onPress={logIn}>
+        <Text style={styles.label}>Log in with Solid</Text>
+      </TouchableHighlight>
+    </View>
+  );
+}
+
+const LoggedIn: FunctionComponent<{ webId: string }> = ({ webId  }) => {
+  const name = '[not yet implemented]';
 
   return (
     <View style={styles.content}>
       <View style={styles.greeting}>
-        <Text style={styles.userLabel} numberOfLines={1}>Logged in as [name]</Text>
-        <Text style={styles.webId} numberOfLines={1}>[webId]</Text>
+  <Text style={styles.greetingLabel} numberOfLines={1}>Logged in as {name}</Text>
+        <Text style={styles.webId} numberOfLines={1}>{webId}</Text>
       </View>
       <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected}>
         <Text style={styles.label}>New game</Text>
@@ -26,20 +59,12 @@ export function HomeScreen() {
       <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected}>
         <Text style={styles.label}>Continue game</Text>
       </TouchableHighlight>
-      <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected}>
+      <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected} onPress={logOut}>
         <Text style={styles.label}>Log out</Text>
       </TouchableHighlight>
     </View>
   );
 }
-
-HomeScreen.options = {
-  topBar: {
-    title: {
-      text: 'Solid Chess',
-    }
-  }
-};
 
 const styles = StyleSheet.create({
   content: {
@@ -51,7 +76,7 @@ const styles = StyleSheet.create({
   greeting: {
     marginBottom: 15,
   },
-  userLabel: {
+  greetingLabel: {
     fontSize: 20,
     marginLeft: 10,
     marginRight: 10,
