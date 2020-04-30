@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@comunica/actor-init-sparql-rdfjs": "1.4.2",
+    "@jasonpaulos/rdflib": "^1.1.0",
     "@jasonpaulos/solid-auth-client": "^2.4.1",
     "@react-native-community/async-storage": "^1.9.0",
     "@solid/cli": "^0.1.0",
@@ -58,6 +59,7 @@
     "react-native": "^0.62.2",
     "react-native-navigation": "^6.5.0",
     "react-native-securerandom": "^1.0.0-rc.0",
+    "readable-stream": "^3.6.0",
     "semantic-chess": "0.2.0",
     "solid-auth-client": "^2.3.0",
     "streamify-array": "^1.0.1",

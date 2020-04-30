@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { Color } from './Color';
 import { useWebId, logIn, logOut } from './auth';
+import { useFetcher } from './useFetcher';
+import { FOAF } from './ns';
 
 export const HomeScreenID = 'com.solidchess.HomeScreen';
 
@@ -42,12 +44,26 @@ const LoggedOut: FunctionComponent = () => {
 }
 
 const LoggedIn: FunctionComponent<{ webId: string }> = ({ webId  }) => {
-  const name = '[not yet implemented]';
+  const profile = useFetcher(webId);
+
+  let message;
+  if (profile.loading) {
+    message = 'Loading...';
+  } else if (profile.error) {
+    message = 'Error: ' + profile.error.toString();
+  } else {
+    const name = profile.store.any(profile.store.sym(webId), FOAF('name'));
+    if (name && name.value) {
+      message = name.value;
+    } else {
+      message = 'Welcome'
+    }
+  }
 
   return (
     <View style={styles.content}>
       <View style={styles.greeting}>
-  <Text style={styles.greetingLabel} numberOfLines={1}>Logged in as {name}</Text>
+        <Text style={styles.greetingLabel} numberOfLines={1}>{message}</Text>
         <Text style={styles.webId} numberOfLines={1}>{webId}</Text>
       </View>
       <TouchableHighlight style={styles.button} underlayColor={Color.HighlightSelected}>
