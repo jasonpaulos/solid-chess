@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import {
   View,
   TouchableHighlight,
@@ -9,6 +9,7 @@ import { Color } from './Color';
 import { useWebId, logIn, logOut } from './auth';
 import { useFetcher } from './useFetcher';
 import { FOAF } from './ns';
+import { Profile } from './Profile';
 
 export const HomeScreenID = 'com.solidchess.HomeScreen';
 
@@ -44,20 +45,38 @@ const LoggedOut: FunctionComponent = () => {
 }
 
 const LoggedIn: FunctionComponent<{ webId: string }> = ({ webId  }) => {
-  const profile = useFetcher(webId);
+  const response = useFetcher(webId);
+  const profile = useMemo<Profile>(() => {
+    const p: Profile = { webId, friends: [] };
+
+    if (!response.loading && !response.error) {
+      const user = response.store.sym(webId);
+      const name = response.store.any(user, FOAF('name'));
+      if (name && name.value) {
+        p.name = name.value;
+      }
+
+      const image = response.store.any(user, FOAF('img'));
+      if (image && image.value) {
+        p.image = image.value;
+      }
+
+      const friends = response.store.each(user, FOAF('knows'));
+      p.friends = friends.map(friend => friend.value);
+    }
+
+    return p;
+  }, [webId, response.loading, !!response.error]);
 
   let message;
-  if (profile.loading) {
+  if (response.loading) {
     message = 'Loading...';
-  } else if (profile.error) {
-    message = 'Error: ' + profile.error.toString();
+  } else if (response.error) {
+    message = 'Error: ' + response.error.toString();
+  } else if (profile.name) {
+    message = profile.name;
   } else {
-    const name = profile.store.any(profile.store.sym(webId), FOAF('name'));
-    if (name && name.value) {
-      message = name.value;
-    } else {
-      message = 'Welcome'
-    }
+    message = 'Welcome';
   }
 
   return (
